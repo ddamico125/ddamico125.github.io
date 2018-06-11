@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <style type="text/css">
+    .spacer{
+      margin: 10px;
+    }
+  </style>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <title>CSV Editor</title>
+  </head>
+  <body>
+    <h1 style="color: #a0a0a0" align="center">CSV Editor</h1>
+    <!--
+      if using chrome, can use the following attributes to select a whole folder
+      <input id="csv" type="file" webkitdirectory directory multiple>
+      style="margin: 10px"
+    -->
+    <div>
+      <input id="csv" type="file" hidden="true" directory multiple>
+      <button type="button" class="btn btn-primary spacer" onclick="clickHiddenInput()">Select Files</button>
+    </div>
+
+    <output id="out">
+        file contents will appear here
+    </output>
+    <!-- <input class="btn btn-primary" type="file" value="Input"> -->
+
+    <!-- Optional JavaScript -->
+    <script type="text/javascript">
+
+      function clickHiddenInput(){
+        document.getElementById("csv").click();
+      };
+
+      var hrefBaseTag = "data:text/csv;charset=utf-8,";
+      var link = document.createElement("a");
+      link.id = 'downloadButton'
+      link.textContent = "Save as CSV";
+      link.download = "file.csv";
+      link.href = ''
+      document.body.appendChild(link);
+
+      link.href = hrefBaseTag + 'marc' + '\n' + 'rice'
+
+      var fileInput = document.getElementById("csv")
+      readFile = function () {
+        console.log(fileInput.files.length)
+        var reader = new FileReader();
+        reader.onload = function () {
+          link.href = hrefBaseTag + reader.result
+          data = reader.result.split('\n')
+          console.log(data[0])
+          document.getElementById('out').innerHTML = data[0];
+        };
+        // start reading the file. When it is done, calls the onload event defined above.
+        reader.readAsBinaryString(fileInput.files[0]);
+      };
+
+      fileInput.addEventListener('change', readFile);
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>
